@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kirim Lokasi ke Telegram Bot</title>
+    <style>
+        #map {
+            height: 400px; 
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <h1>Kirim Lokasi ke Bot Telegram</h1>
+    <button id="sendLocation">Kirim Lokasi Saya</button>
+    <div id="status"></div>
+    <div id="map"></div>
+
+    <script>
+        document.getElementById('sendLocation').onclick = function() {
+            // Memeriksa apakah Geolocation API tersedia
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    const latitude = position.coords.latitude;
+                    const longitude = position.coords.longitude;
+                    sendLocationToTelegram(latitude, longitude);
+                    initMap(latitude, longitude); // Menampilkan peta dengan lokasi
+                }, function(error) {
+                    document.getElementById('status').innerText = 'Gagal mendapatkan lokasi: ' + error.message;
+                });
+            } else {
+                document.getElementById('status').innerText = 'Geolocation tidak didukung oleh browser ini.';
+            }
+        };
+
+        function sendLocationToTelegram(latitude, longitude) {
+            const chatId = '509021825'; // Ganti dengan chat ID yang sesuai
+            const token = '7763890001:AAHes-DbuTZ9RFOhNagBZ-q1h_FO2Wy1D6Q'; // Ganti dengan token bot yang sesuai
+            const url = `https://api.telegram.org/bot${token}/sendLocation?chat_id=${chatId}&latitude=${latitude}&longitude=${longitude}`;
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.ok) {
+                        document.getElementById('status').innerText = 'Lokasi berhasil dikirim!';
+                    } else {
+                        document.getElementById('status').innerText = 'Gagal mengirim lokasi: ' + data.description;
+                    }
+                })
+                .catch(error => {
+                    document.getElementById('status').innerText = 'Error: ' + error.message;
+                });
+        }
+
+        function initMap(latitude, longitude) {
+            const map = new google.maps.Map(document.getElementById("map"), {
+                zoom: 15,
+                center: { lat: latitude, lng: longitude },
+            });
+            const marker = new google.maps.Marker({
+                position: { lat: latitude, lng: longitude },
+                map: map,
+            });
+        }
+    </script>
+
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap"></script>
+</body>
+</html>
